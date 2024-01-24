@@ -21,9 +21,9 @@ for i in range(3):
     target_pyr.append(cv2.pyrDown(target_pyr[i]))
 
 sift = cv2.xfeatures2d.SIFT_create()
-i=1
+i=0
 # Perform feature detection and matching at each level of the pyramid
-if i ==1:
+if i ==0:
     template = template_pyr[i]
     target = target_pyr[i]
 

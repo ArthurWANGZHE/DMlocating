@@ -58,7 +58,7 @@ image_height = barcode_rect.height
 dm_center = (u + image_width / 2, v + image_height / 2)
 
 # 相机参数
-fx, fy, cx, cy =0.0144613,0.0144613,1581.92,1121.29
+fx, fy, cx, cy =15.8218,15.8218,1426.27,1072.45
 real_width, real_height =0.03,0.03
 
 
@@ -69,7 +69,6 @@ depth = (depth_x + depth_y) / 2
 image_point = np.array([u, v, 1]).reshape(3, 1)
 camera_point = depth * np.linalg.inv(np.array([[fx, 0, cx], [0, fy, cy], [0, 0, 1]])).dot(image_point)
 print("Point in camera coordinates:\n", camera_point)
-
 
 t6 = time.time()
 # 计算yaw角度

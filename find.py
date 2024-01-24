@@ -332,6 +332,8 @@ class FindBox:
         if rad > 180.0:
             rad = -(360.0 - rad)
 
+
+
         # 一维码识别，DecodedDataStrings是string类型
         SymbolRegions, DecodedDataStrings = ha.find_bar_code(Image, self.BarCodeHandle, 'Code 128')
 
