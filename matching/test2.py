@@ -30,6 +30,8 @@ target = target_pyr[level]
 
 kp1, des1 = sift.detectAndCompute(template, None)
 kp2, des2 = sift.detectAndCompute(target, None)
+des1=np.array(des1,dtype=np.float32)
+des2=np.array(des2,dtype=np.float32)
 
 FLANN_INDEX_KDTREE = 0
 index_params = dict(algorithm=FLANN_INDEX_KDTREE, trees=5)
