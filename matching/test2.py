@@ -83,6 +83,12 @@ x2,y2 = dst[1][0][0],dst[1][0][1]
 x3,y3 = dst[2][0][0],dst[2][0][1]
 x4,y4 = dst[3][0][0],dst[3][0][1]
 
+print("Coordinates of the four corners: ")
+print("({},{})".format(x1,y1))
+print("({},{})".format(x2,y2))
+print("({},{})".format(x3,y3))
+print("({},{})".format(x4,y4))
+
 
 # 相机参数
 fx, fy, cx, cy =0.0158218,0.0158218,1426.27,1072.45

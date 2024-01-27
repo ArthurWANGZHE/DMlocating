@@ -1,34 +1,48 @@
 import numpy as np
-x1,y1 = dst[0][0][0],dst[0][0][1]
-x2,y2 = dst[1][0][0],dst[1][0][1]
-x3,y3 = dst[2][0][0],dst[2][0][1]
-x4,y4 = dst[3][0][0],dst[3][0][1]
-
+import cv2
+DATE = [(2223.06640625, 905.6930541992188),
+        (2229.291015625, 587.3419189453125),
+        (1295.16015625, 595.9006958007812),
+        (1299.0615234375, 906.7120971679688)]
+x1, y1 = DATE[0]
+x2, y2 = DATE[1]
+x3, y3 = DATE[2]
+x4, y4 = DATE[3]
 
 # 相机参数
-fx, fy, cx, cy =0.0158218,0.0158218,1426.27,1072.45
-real_width, real_height =0.1,0.033
+fx, fy, cx, cy = 0.0158218, 0.0158218, 1426.27, 1072.45
+real_width, real_height = 0.1, 0.033
+# 旋转向量（角度）
+#1.32086, 4.93809, 180.669
+r_deg = np.array([1.32086, 4.93809, 180.669])
+R, _ = cv2.Rodrigues(r_deg)
+R_inv = np.linalg.inv(R)
+# 平移向量
+#0.0545613, 0.0319774, 0.214913]
+t = np.array([0.0545613, 0.0319774, 0.214913])
 kappa = -179.202
 
 
 # 去畸变函数
 def undistort_brown_single_pt(pt, kappa, max_iter=10):
     x_distorted, y_distorted = pt
-    r_distorted_sq = x_distorted**2 + y_distorted**2
+    r_distorted_sq = x_distorted ** 2 + y_distorted ** 2
 
     # 初始估计
     x_undistorted, y_undistorted = pt
 
     for _ in range(max_iter):
-        r_undistorted_sq = x_undistorted**2 + y_undistorted**2
+        r_undistorted_sq = x_undistorted ** 2 + y_undistorted ** 2
         distortion = 1 + kappa * r_undistorted_sq
         x_undistorted = x_distorted / distortion
         y_undistorted = y_distorted / distortion
 
     return np.array([x_undistorted, y_undistorted])
 
+
 def undistort_brown(pts, kappa, max_iter=10):
     return np.array([undistort_brown_single_pt(pt, kappa, max_iter) for pt in pts])
+
 
 # 相机内参
 K = np.array([[fx, 0, cx],
@@ -53,7 +67,24 @@ qr_center = np.mean(qr_corners, axis=0)
 
 # 将二维码的像素坐标转换为归一化的图像平面坐标
 qr_center_normalized = undistort_brown([qr_center], kappa)
-
+u,v=qr_center_normalized[0]
+s=np.array([[u],[v],[1]])
+k_inv=np.linalg.inv(K)
+w = np.linalg.norm(qr_corners[0] - qr_corners[1])
+a=R_inv@k_inv@s
+x=a[0]
+y=a[1]
+z=a[2]
+b=R_inv@t
+x_1=b[0]
+y_1=b[1]
+z_1=b[2]
+dz = fx * qr_width / w
+dx=(x-x_1)/1.4815754294435937
+dy=(y-y_1)/2.3110820369324028
+dz=(z-z_1)/-22.54218331146375
+print(dx,dy,dz)
+"""
 # 计算三联二维码在图像中的像素宽度
 w = np.linalg.norm(qr_corners[0] - qr_corners[1])
 
@@ -64,4 +95,5 @@ dz = fx * qr_width / w
 dx = qr_center_normalized[0, 0] * dz
 dy = qr_center_normalized[0, 1] * dz
 
-print(dx,dy,dz)
+print(dx, dy, dz)
+"""
