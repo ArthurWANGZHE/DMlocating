@@ -1,0 +1,8 @@
+//读取参数，请分别写入相机序列号，相机参数文件名，相机位姿文件名
+//二维码cad文件名，正确摆放料箱位姿文件名，照片保存文件夹
+DA0763408
+/home/zhang/Desktop/camera/campar.dat
+/home/zhang/Desktop/camera/campose.dat
+/home/zhang/Desktop/camera/Drawing7.dxf
+/home/zhang/Desktop/camera/refpose.dat
+/home/zhang/Desktop/camera/pictures
